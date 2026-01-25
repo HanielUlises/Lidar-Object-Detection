@@ -17,6 +17,8 @@
 #include <vector>
 #include <ctime>
 #include <chrono>
+#include <filesystem>
+#include <algorithm> 
 #include "render/box.h"
 
 template<typename PointT>
@@ -44,7 +46,26 @@ public:
 
     typename pcl::PointCloud<PointT>::Ptr loadPcd(std::string file);
 
-    std::vector<boost::filesystem::path> streamPcd(std::string dataPath);
+    std::vector<std::filesystem::path> streamPcd(std::string dataPath);
   
 };
+
+
+template<typename PointT>
+std::vector<std::filesystem::path>
+ProcessPointClouds<PointT>::streamPcd(std::string dataPath)
+{
+    namespace fs = std::filesystem;
+
+    std::vector<fs::path> paths;
+
+    for (const auto& entry : fs::directory_iterator(dataPath))
+    {
+        paths.push_back(entry.path());
+    }
+
+    std::sort(paths.begin(), paths.end());
+    return paths;
+}
+
 #endif /* PROCESSPOINTCLOUDS_H_ */
