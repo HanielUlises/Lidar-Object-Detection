@@ -5,7 +5,6 @@
 #include "sensors/lidar.h"
 #include "render/render.h"
 #include "processPointClouds.h"
-// using templates for processPointClouds so also include .cpp to help linker
 #include "processPointClouds.cpp"
 
 std::vector<Car> initHighway(bool renderScene, pcl::visualization::PCLVisualizer::Ptr& viewer)
@@ -54,6 +53,9 @@ void simpleHighway(pcl::visualization::PCLVisualizer::Ptr& viewer)
 
     // TODO:: Create point processor
     ProcessPointClouds<pcl::PointXYZ> point_processor;
+
+    auto startTime = std::chrono::steady_clock::now();
+
   
 }
 
