@@ -4,7 +4,6 @@
 #include "../../render/render.h"
 #include <unordered_set>
 #include "../../processPointClouds.h"
-// using templates for processPointClouds so also include .cpp to help linker
 #include "../../processPointClouds.cpp"
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr CreateData()
@@ -69,6 +68,13 @@ std::unordered_set<int> Ransac(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int ma
 	// TODO: Fill in this function
 
 	// For max iterations 
+	for(int i = 0; i < maxIterations; i++) {
+		std::unordered_set<int> inliers;
+
+		// Pick 2 random points
+		while(inliers.size() < 2)
+			inliers.insert(rand() % cloud->points.size());
+	}
 
 	// Randomly sample subset and fit line
 
