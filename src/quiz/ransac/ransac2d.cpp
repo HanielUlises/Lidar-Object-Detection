@@ -74,6 +74,26 @@ std::unordered_set<int> Ransac(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int ma
 		// Pick 2 random points
 		while(inliers.size() < 2)
 			inliers.insert(rand() % cloud->points.size());
+		
+		auto itr_1 = inliers.begin();
+		pcl::PointXYZ p1 = cloud -> points[*itr_1];
+		itr_1++;
+		pcl::PointXYZ p2 = cloud -> points[*itr_1];
+
+		double A = p1.y - p2.y;
+		double B = p2.x - p1.x;
+		double C = p1.x * p2.y - p2.x * p1.y;
+
+		for(int j = 0; j < cloud -> points.size(); j++){
+			double distance = std::abs(A * cloud -> points[j].x + B * cloud -> points[j].y + C)/std::sqrt(A * A + B * B);
+
+			if (distance <= distanceTol)
+				inliers.insert(j);
+		}
+			
+		
+		if(inliers.size() > inliersResult.size())
+   			inliersResult = inliers;
 	}
 
 	// Randomly sample subset and fit line
@@ -82,7 +102,6 @@ std::unordered_set<int> Ransac(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int ma
 	// If distance is smaller than threshold count it as inlier
 
 	// Return indicies of inliers from fitted line with most inliers
-	
 	return inliersResult;
 
 }
